@@ -18,7 +18,7 @@ const Body = () => {
       //fetch user from api
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
-      })
+      });
       dispatch(addUser(res?.data));
       if (user) {
         Navigate("/");
@@ -34,9 +34,12 @@ const Body = () => {
     FetchUser();
   }, []);
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
+      <main className="flex-grow">
+
       <Outlet />
+      </main>
       <Footer />
     </div>
   );

@@ -8,6 +8,7 @@ import { BASE_URL } from "../utils/constents";
 const Login = () => {
   const [emailId, setEmail] = useState("gaurav123@gmail.com");
   const [password, setPassword] = useState("Gaurav@1234");
+  const [err, setErr] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogin = async () => {
@@ -20,10 +21,11 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-      
+
       dispatch(addUser(res?.data?.data));
-      navigate("/");
+      navigate("/" );
     } catch (err) {
+      setErr(err?.response?.data);
       console.error(err);
     }
   };
@@ -51,7 +53,7 @@ const Login = () => {
             setPassword(e.target.value);
           }}
         />
-
+        <p className="text-red-500">{err}</p>
         <button
           className="btn btn-neutral mt-4 hover:bg-base-300"
           onClick={handleLogin}

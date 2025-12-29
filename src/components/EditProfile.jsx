@@ -2,18 +2,22 @@ import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constents";
+import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
+import { useDispatch } from "react-redux";
 const EditProfile = () => {
+  const dispatch = useDispatch();
   const saveProfile = async () => {
     try {
-      setErr("")
+      setErr("");
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
         { firstName, lastName, age, gender, about, photoUrl },
         { withCredentials: true }
       );
+      dispatch(addUser(res?.data));
     } catch (err) {
-      setErr(err?.response?.data)
+      setErr(err?.response?.data);
       console.error(err);
     }
   };
@@ -95,7 +99,10 @@ const EditProfile = () => {
             }}
           />
           <p className="text-red-600 font-bold">{err}</p>
-          <button className="btn btn-active btn-accent mt-2" onClick={saveProfile}>
+          <button
+            className="btn btn-active btn-accent mt-2"
+            onClick={saveProfile}
+          >
             Update
           </button>
         </fieldset>

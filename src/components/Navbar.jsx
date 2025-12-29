@@ -19,7 +19,7 @@ const Navbar = () => {
       );
 
       dispatch(removeUser());
-      dispatch(removeFeed())
+      dispatch(removeFeed());
 
       Navigate("/login", { replace: true });
     } catch (err) {
@@ -31,7 +31,9 @@ const Navbar = () => {
     <>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">devtender</a>
+          <Link to="/" className="btn btn-ghost text-xl">
+            devtender
+          </Link>
         </div>
 
         {user && (
@@ -61,7 +63,10 @@ const Navbar = () => {
                   </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/connection">connections</Link>
+                </li>
+                <li>
+                  <Link to="/connectionRequest">Request</Link>
                 </li>
                 <li>
                   <a onClick={handleClick}>Logout</a>

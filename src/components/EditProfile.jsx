@@ -5,7 +5,9 @@ import { BASE_URL } from "../utils/constents";
 import { addUser } from "../utils/userSlice";
 import UserCard from "./UserCard";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const EditProfile = () => {
+  const navigate= useNavigate()
   const dispatch = useDispatch();
   const saveProfile = async () => {
     try {
@@ -16,6 +18,7 @@ const EditProfile = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res?.data));
+      navigate("/")
     } catch (err) {
       setErr(err?.response?.data);
       console.error(err);
@@ -92,7 +95,7 @@ const EditProfile = () => {
           <input
             type="text"
             className="input"
-            placeholder="About"
+            placeholder="PhotoUrl"
             value={photoUrl}
             onChange={(e) => {
               setPhotoUrl(e.target.value);

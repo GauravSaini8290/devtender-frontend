@@ -6,11 +6,16 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constents";
 const Login = () => {
-  const [emailId, setEmail] = useState("gaurav123@gmail.com");
-  const [password, setPassword] = useState("Gaurav@1234");
+  const [emailId, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [signUp, setSignUp] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+
   const handleLogin = async () => {
     try {
       const res = await axios.post(
@@ -23,17 +28,64 @@ const Login = () => {
       );
 
       dispatch(addUser(res?.data?.data));
-      navigate("/" );
+      navigate("/");
     } catch (err) {
-      setErr(err?.response?.data);
+      setErr(
+        err?.response?.data?.message || err?.message || "Something went wrong"
+      );
+
+      console.error(err);
+    }
+  };
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/signup",
+        {
+          firstName,
+          lastName,
+          emailId,
+          password,
+        },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res?.data?.data));
+      navigate("/profile");
+    } catch (err) {
+      setErr(
+        err?.response?.data?.message || err?.message || "Something went wrong"
+      );
+
       console.error(err);
     }
   };
   return (
     <div className="flex justify-center my-10">
       <fieldset className="fieldset bg-base-400 border-base-300 rounded-box w-xs border p-4 ">
-        <legend className="fieldset-legend">Login</legend>
+        <legend className="fieldset-legend">
+          {signUp ? "SignUp" : "Login"}
+        </legend>
 
+        {signUp && (
+          <>
+            <label className="label">FirstName</label>
+            <input
+              type="text"
+              className="input"
+              placeholder="FirstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <label className="label">lastName</label>
+            <input
+              type="text"
+              className="input"
+              placeholder="LastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </>
+        )}
         <label className="label">Email</label>
         <input
           type="email"
@@ -45,7 +97,7 @@ const Login = () => {
 
         <label className="label">Password</label>
         <input
-          type="password"
+          type="text"
           className="input"
           placeholder="Password"
           value={password}
@@ -54,11 +106,20 @@ const Login = () => {
           }}
         />
         <p className="text-red-500">{err}</p>
+        <p
+          className="text-green-500 cursor-pointer"
+          onClick={() => {
+            setSignUp((value) => !value);
+            setErr("");
+          }}
+        >
+          {signUp ? "existing user : login here" : "New user : signUp here"}
+        </p>
         <button
           className="btn btn-neutral mt-4 hover:bg-base-300"
-          onClick={handleLogin}
+          onClick={signUp ? handleSignUp : handleLogin}
         >
-          Login
+          {signUp ? "SignUp" : "Login"}
         </button>
       </fieldset>
     </div>

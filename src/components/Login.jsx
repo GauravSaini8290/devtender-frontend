@@ -6,8 +6,8 @@ import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constents";
 const Login = () => {
-  const [emailId, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmail] = useState("gaurav@123gmail.com");
+  const [password, setPassword] = useState("Gaurav@1234");
   const [err, setErr] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
